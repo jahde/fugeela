@@ -10,7 +10,15 @@
   "license": "ISC",
   "dependencies": {
     "basic-auth": "^1.1.0",
+    "body-parser": "^1.17.1",
+    "dotenv": "^4.0.0",
+    "emailjs": "^1.0.8",
     "express": "^4.15.2",
-    "nodemon": "^1.11.0"
+    "express-session": "^1.15.1",
+    "mongodb": "^2.2.24",
+    "nodemon": "^1.11.0",
+    "passwordless": "^1.1.2",
+    "passwordless-mongostore": "^0.1.4",
+    "twilio": "^2.11.1"
   }
 }

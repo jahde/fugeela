@@ -7,9 +7,31 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="//assets-cdn.ziggeo.com/v1-stable/ziggeo.css" />
+    <link href="dist/css/flat-ui.css" rel="stylesheet">
     <script src="//assets-cdn.ziggeo.com/v1-stable/ziggeo.js"></script>
+    <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
     <script>
       ZiggeoApi.token = "ea85aeffd6e94e3bb9265e759f576cfb";
+    </script>
+    <script>
+      ZiggeoApi.Videos.index({}, {
+      	success: function (args, videos) {
+      		// videos is an array of all the videos
+      		// the following code dynamically adds all the videos to the page
+      		for (var i = 0; i < videos.length; ++i) {
+      			$(".ziggeo-video-container").append("<ziggeo ziggeo-video='" + videos[i].token + "'></ziggeo>");
+      		}
+      	}
+      });
+    </script>
+    <script>
+        ZiggeoApi.Events.on("submitted", function (data) {
+          $.post( "/sendtoken", { user: "jahde@example.com" } );
+          alert("Sent a text to '" + '6462038581' + "'!");
+        });
     </script>
     <style>
       body {
@@ -21,13 +43,28 @@
   <body>
     <div class="container">
       <div class="jumbotron">
-        <h1>Video Here</h1>
+        <h1>Jahde's Video Diary</h1>
       </div>
 
-      <ziggeo ziggeo-limit=15
+      <div class="ziggeo-video-container">
+
+      </div>
+
+      <ziggeo ziggeo-limit=60
           ziggeo-width=320
           ziggeo-height=240>
       </ziggeo>
+    </div>
+
+    <div class="container">
+      <div class="jumbotron">
+        <h2>Login</h2>
+        <form action="/sendtoken" method="POST">
+          Phone Number:
+          <br><input name="user" type="text">
+          <br><input type="submit" value="Login">
+        </form>
+      </div>
     </div>
 
   </body>
