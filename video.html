@@ -6,6 +6,8 @@
     <title>Sample Site</title>
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//assets-cdn.ziggeo.com/v1-stable/ziggeo.css" />
+    <script src="//assets-cdn.ziggeo.com/v1-stable/ziggeo.js"></script>
     <script>
       ZiggeoApi.token = "ea85aeffd6e94e3bb9265e759f576cfb";
     </script>
@@ -21,6 +23,11 @@
       <div class="jumbotron">
         <h1>Video Here</h1>
       </div>
+
+      <ziggeo ziggeo-limit=15
+          ziggeo-width=320
+          ziggeo-height=240>
+      </ziggeo>
     </div>
 
   </body>
