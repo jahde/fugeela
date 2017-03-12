@@ -7,7 +7,6 @@
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="//assets-cdn.ziggeo.com/v1-stable/ziggeo.css" />
-    <link href="dist/css/flat-ui.css" rel="stylesheet">
     <script src="//assets-cdn.ziggeo.com/v1-stable/ziggeo.js"></script>
     <script
   src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -33,6 +32,32 @@
           alert("Sent a text to '" + '6462038581' + "'!");
         });
     </script>
+    <script>
+      // var dir = "/uploads";
+      // var fileextension = ".png";
+      // $.ajax({
+      //   //This will retrieve the contents of the folder if the folder is configured as 'browsable'
+      //   url: dir,
+      //   success: function (data) {
+      //       //List all .png file names in the page
+      //       $(data).find("a:contains(" + fileextension + ")").each(function () {
+      //           var filename = this.href.replace(window.location.host, "").replace("http://", "");
+      //           $(".image-uploads").append("<img src='" + dir + filename + "'>");
+      //       });
+      //   }
+      // });
+      var images;
+      $.get( "/images", function( data ) {
+        images = data.images;
+
+        var $div = $("#image-uploads");
+
+debugger;
+        $.each(images, function(i, val) {
+          $("<img style='width: 200px; height: 200px;'/>").attr("src", val).appendTo($div);
+        });
+      });
+    </script>
     <style>
       body {
         padding-top: 50px;
@@ -44,7 +69,12 @@
     <div class="container">
       <div class="jumbotron">
         <h1>Jahde's Video Diary</h1>
+        <div class="delete-all">
+          <strong><button style="background-color: red; color: white; border: 0;">
+            DELETE EVERYTHING</button></strong>
+        </div>
       </div>
+
 
       <div class="ziggeo-video-container">
 
@@ -58,12 +88,23 @@
 
     <div class="container">
       <div class="jumbotron">
-        <h2>Login</h2>
-        <form action="/sendtoken" method="POST">
+        <h2>Upload files</h2>
+        <!-- <form action="/sendtoken" method="POST">
           Phone Number:
           <br><input name="user" type="text">
           <br><input type="submit" value="Login">
+        </form> -->
+
+        <form id="uploadForm" enctype="multipart/form-data" action="/api/photo" method="post">
+          <input type="file" name="userPhoto" />
+          <input type="submit" value="Upload Image" name="submit">
         </form>
+
+        <div id="image-uploads">
+          <!-- <div class="image-uploads-item">
+            <img src="userPhoto-1489275376248.png" alt="" style="width: 200px; height: 200px;">
+          </div> -->
+        </div>
       </div>
     </div>
 

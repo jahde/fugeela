@@ -1,9 +1,20 @@
 var express = require('express')
 var app = express()
-var path = require('path');
-var basicAuth = require('basic-auth');
+var path = require('path')
+var basicAuth = require('basic-auth')
 var bodyParser = require('body-parser')
 var session = require('express-session')
+
+var multer = require('multer');
+var storage = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, './uploads');
+  },
+  filename: function (req, file, callback) {
+    callback(null, file.fieldname + '-' + Date.now() + '.png');
+  }
+});
+var upload = multer({ storage : storage}).single('userPhoto');
 
 // // TEST Mong
 // var MongoClient = require('mongodb').MongoClient
@@ -38,6 +49,7 @@ app.use(bodyParser.json())
 
 // files
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 // app.use(function (req, res) {
 //   res.setHeader('Content-Type', 'text/plain')
@@ -111,6 +123,16 @@ app.post('/sendtoken',
         res.render('sent');
 });
 
+app.post('/api/photo',function(req,res){
+    upload(req,res,function(err) {
+        if(err) {
+            return res.end("Error uploading file.");
+        }
+        res.end("File is uploaded");
+        // res.redirect('/jahde');
+    });
+});
+
 // app.post('/sendtoken',
 //     passwordless.requestToken(
 //         // Turn the email address into an user ID
@@ -131,8 +153,21 @@ app.post('/sendtoken',
 //           res.render('sent');
 // });
 
+var testFolder = './uploads/';
+var fs = require('fs');
+var imagesArr = [];
+fs.readdir(testFolder, (err, files) => {
+  files.forEach(file => {
+    imagesArr.push(file);
+    console.log(file);
+  });
+})
+
+app.get('/images', function (req, res) {
+  res.json({ images: imagesArr });
+})
+
 app.get('/jahde', function (req, res) {
-  // res.send('Hello World Jahde!')
   res.sendFile(path.join(__dirname + '/video.html'))
 })
 
@@ -140,6 +175,11 @@ app.post('/', function (req, res) {
   res.redirect('/jahde');
   // res.send('Got a POST request')
 })
+
+app.get('/restart', function (req, res, next) {
+  process.exit(1);
+});
+
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
